@@ -1,0 +1,45 @@
+services:
+  - type: web
+    name: leadflow-ai
+    env: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn -w 1 -b 0.0.0.0:$PORT "leadflow_ai.app:app"
+    disk:
+      name: leadflow-ai-data
+      mountPath: /opt/render/project/src/leadflow_ai/database
+      sizeGB: 1
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DASHBOARD_USERNAME
+        value: admin
+      - key: DASHBOARD_PASSWORD
+        sync: false
+      - key: DATABASE_URL
+        value: sqlite:////opt/render/project/src/leadflow_ai/database/leadflow_ai.sqlite3
+      - key: GMAIL_LABEL_NAME
+        value: Follow Up
+      - key: GMAIL_CREDENTIALS_FILE
+        sync: false
+      - key: GMAIL_TOKEN_FILE
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        value: 587
+      - key: SMTP_USERNAME
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: SMTP_FROM_EMAIL
+        sync: false
+      - key: SMTP_FROM_NAME
+        value: LeadFlow AI
+      - key: SMTP_TLS
+        value: true
+      - key: SMTP_SSL
+        value: false
+      - key: BUSINESS_TIMEZONE
+        value: America/New_York
+

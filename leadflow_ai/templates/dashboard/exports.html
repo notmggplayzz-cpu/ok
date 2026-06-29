@@ -1,0 +1,10 @@
+{% extends "dashboard/base.html" %}
+{% block content %}
+<div class="page-head"><h1>Exports</h1></div>
+<section class="panel export-grid">
+  {% for kind in ['all','replied','pending','completed','failed','paused'] %}
+  <a class="btn btn-outline-info" href="{{ url_for('dashboard.export_csv', kind=kind) }}">Export {{ kind|title }}</a>
+  {% endfor %}
+</section>
+{% endblock %}
+

@@ -1,0 +1,15 @@
+.env
+credentials.json
+token.json
+*.sqlite3
+*.sqlite3-*
+__pycache__/
+*.py[cod]
+*.swp
+.venv/
+leadflow_ai/logs/*
+leadflow_ai/backups/*
+leadflow_ai/database/*
+!leadflow_ai/logs/.gitkeep
+!leadflow_ai/backups/.gitkeep
+!leadflow_ai/database/.gitkeep

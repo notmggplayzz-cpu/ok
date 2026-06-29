@@ -1,0 +1,12 @@
+{% extends "dashboard/base.html" %}
+{% block content %}
+<div class="page-head"><h1>Email Preview</h1></div>
+<section class="panel">
+  <p><strong>To:</strong> {{ lead.email }}</p>
+  <p><strong>Subject:</strong> {{ rendered.subject }}</p>
+  <div class="preview-frame">{{ rendered.html | safe }}</div>
+  <h2>Plain Text</h2>
+  <pre class="reply-box">{{ rendered.text }}</pre>
+</section>
+{% endblock %}
+

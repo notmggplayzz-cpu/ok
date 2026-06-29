@@ -1,0 +1,37 @@
+{% extends "dashboard/base.html" %}
+{% block content %}
+<div class="page-head">
+  <h1>Dashboard</h1>
+  <div class="quick-actions">
+    <form method="post" action="{{ url_for('dashboard.run_job', job='import') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="btn btn-sm btn-outline-info">Import Gmail</button></form>
+    <form method="post" action="{{ url_for('dashboard.run_job', job='replies') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="btn btn-sm btn-outline-info">Detect Replies</button></form>
+    <form method="post" action="{{ url_for('dashboard.run_job', job='send') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="btn btn-sm btn-primary">Send Due</button></form>
+  </div>
+</div>
+<div class="metric-grid">
+  <div class="metric"><span>Total Leads</span><strong>{{ total }}</strong></div>
+  <div class="metric"><span>Pending</span><strong>{{ counts.get('pending', 0) }}</strong></div>
+  <div class="metric"><span>Waiting</span><strong>{{ counts.get('waiting', 0) }}</strong></div>
+  <div class="metric"><span>Sending Today</span><strong>{{ sending_today }}</strong></div>
+  <div class="metric"><span>Replied</span><strong>{{ counts.get('replied', 0) }}</strong></div>
+  <div class="metric"><span>Completed</span><strong>{{ counts.get('completed', 0) }}</strong></div>
+  <div class="metric"><span>Paused</span><strong>{{ counts.get('paused', 0) }}</strong></div>
+  <div class="metric"><span>Failed</span><strong>{{ counts.get('failed', 0) }}</strong></div>
+</div>
+<section class="panel">
+  <h2>Recent Activity</h2>
+  <div class="table-responsive">
+    <table class="table table-dark table-hover align-middle">
+      <thead><tr><th>Time</th><th>Action</th><th>Details</th></tr></thead>
+      <tbody>
+        {% for item in recent %}
+        <tr><td>{{ item.created_at }}</td><td>{{ item.action }}</td><td>{{ item.details }}</td></tr>
+        {% else %}
+        <tr><td colspan="3" class="text-secondary">No activity yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+

@@ -1,0 +1,23 @@
+{% extends "dashboard/base.html" %}
+{% block content %}
+<div class="page-head"><h1>{{ lead.email }}</h1><a class="btn btn-outline-info" target="_blank" href="https://mail.google.com/mail/u/0/#inbox/{{ lead.thread_id }}">Open Gmail Thread</a></div>
+<section class="panel two-col">
+  <div>
+    <h2>Lead</h2>
+    <dl class="detail-list">
+      <dt>Name</dt><dd>{{ lead.name }}</dd><dt>Company</dt><dd>{{ lead.company }}</dd><dt>Website</dt><dd>{{ lead.website }}</dd><dt>Status</dt><dd>{{ lead.status }}</dd><dt>Stage</dt><dd>{{ lead.current_stage }}</dd><dt>Next Follow-up</dt><dd>{{ lead.next_scheduled_followup }}</dd>
+    </dl>
+  </div>
+  <div>
+    <h2>Reply</h2>
+    <p><strong>Replied:</strong> {{ lead.reply_status }}</p>
+    <p><strong>Sender:</strong> {{ lead.reply_sender }}</p>
+    <pre class="reply-box">{{ lead.reply_body }}</pre>
+  </div>
+</section>
+<section class="panel">
+  <h2>Activity</h2>
+  <table class="table table-dark"><thead><tr><th>Time</th><th>Action</th><th>Details</th></tr></thead><tbody>{% for item in activities %}<tr><td>{{ item.created_at }}</td><td>{{ item.action }}</td><td>{{ item.details }}</td></tr>{% endfor %}</tbody></table>
+</section>
+{% endblock %}
+

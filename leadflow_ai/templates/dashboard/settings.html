@@ -1,0 +1,22 @@
+{% extends "dashboard/base.html" %}
+{% block content %}
+<div class="page-head"><h1>Settings</h1></div>
+<section class="panel">
+  <form method="post" class="settings-grid">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    {% for key,label,type in [
+      ('business_start_hour','Business Start Hour','number'),('business_end_hour','Business End Hour','number'),('business_timezone','Timezone','text'),('scheduler_interval_minutes','Scheduler Interval Minutes','number'),('theme','Dashboard Theme','text'),('max_retry_count','Maximum Retry Count','number'),('retry_delay_minutes','Retry Delay Minutes','number')
+    ] %}
+    <label>{{ label }}<input class="form-control" type="{{ type }}" name="{{ key }}" value="{{ settings.get(key, '') }}"></label>
+    {% endfor %}
+    {% for key,label in [('weekdays_only','Weekdays Only'),('notification_enabled','Desktop Notifications'),('sound_enabled','Sound Notification'),('auto_remove_gmail_label','Auto Remove Gmail Label')] %}
+    <label class="form-check-row"><input class="form-check-input" type="checkbox" name="{{ key }}" value="True" {% if settings.get(key, '').lower() == 'true' %}checked{% endif %}> {{ label }}</label>
+    {% endfor %}
+    <button class="btn btn-primary">Save Settings</button>
+  </form>
+  <hr>
+  <h2>SMTP Settings</h2>
+  <p class="text-secondary">SMTP credentials are loaded from environment variables in <code>.env</code>.</p>
+</section>
+{% endblock %}
+

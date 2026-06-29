@@ -1,0 +1,33 @@
+{% extends "dashboard/base.html" %}
+{% block content %}
+<div class="page-head"><h1>Templates</h1></div>
+<section class="panel">
+  {% for template in templates %}
+  <form method="post" class="editor">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <input type="hidden" name="id" value="{{ template.id }}">
+    <div class="row g-3">
+      <div class="col-md-3"><label class="form-label">Name</label><input class="form-control" name="name" value="{{ template.name }}" required></div>
+      <div class="col-md-7"><label class="form-label">Subject</label><input class="form-control" name="subject" value="{{ template.subject }}" required></div>
+      <div class="col-md-2 form-check-row"><input class="form-check-input" type="checkbox" name="enabled" {% if template.enabled %}checked{% endif %}> Enabled</div>
+      <div class="col-md-6"><label class="form-label">HTML</label><textarea class="form-control codearea" name="html_body">{{ template.html_body }}</textarea></div>
+      <div class="col-md-6"><label class="form-label">Plain Text</label><textarea class="form-control codearea" name="text_body">{{ template.text_body }}</textarea></div>
+    </div>
+    <button class="btn btn-primary mt-3">Save</button>
+  </form>
+  {% endfor %}
+  <h2>New Template</h2>
+  <form method="post" class="editor">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <div class="row g-3">
+      <div class="col-md-3"><input class="form-control" name="name" placeholder="name" required></div>
+      <div class="col-md-7"><input class="form-control" name="subject" placeholder="Subject" required></div>
+      <div class="col-md-2 form-check-row"><input class="form-check-input" type="checkbox" name="enabled" checked> Enabled</div>
+      <div class="col-md-6"><textarea class="form-control codearea" name="html_body" placeholder="<p>Hi {{ name }},</p>" required></textarea></div>
+      <div class="col-md-6"><textarea class="form-control codearea" name="text_body" placeholder="Hi {{ name }}," required></textarea></div>
+    </div>
+    <button class="btn btn-primary mt-3">Create</button>
+  </form>
+</section>
+{% endblock %}
+

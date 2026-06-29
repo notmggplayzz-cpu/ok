@@ -1,0 +1,45 @@
+{% extends "dashboard/base.html" %}
+{% block content %}
+<div class="page-head"><h1>Leads</h1></div>
+<form class="toolbar" method="get">
+  <input class="form-control" name="q" value="{{ q }}" placeholder="Search email, name, company, subject, website, status, reply text">
+  <select class="form-select" name="status">
+    <option value="">All statuses</option>
+    {% for s in LeadStatus %}<option value="{{ s.value }}" {% if status == s.value %}selected{% endif %}>{{ s.value }}</option>{% endfor %}
+  </select>
+  <button class="btn btn-primary">Search</button>
+</form>
+<section class="panel">
+  <div class="table-responsive">
+    <table class="table table-dark table-hover align-middle">
+      <thead><tr><th>Email</th><th>Name</th><th>Company</th><th>Stage</th><th>Status</th><th>Next</th><th>Actions</th></tr></thead>
+      <tbody>
+      {% for lead in leads %}
+        <tr>
+          <td><a href="{{ url_for('dashboard.lead_detail', lead_id=lead.id) }}">{{ lead.email }}</a><div class="small text-secondary">{{ lead.subject }}</div></td>
+          <td>{{ lead.name }}</td>
+          <td>{{ lead.company }}</td>
+          <td>{{ lead.current_stage }}</td>
+          <td><span class="badge text-bg-secondary">{{ lead.status }}</span></td>
+          <td>{{ lead.next_scheduled_followup or "" }}</td>
+          <td class="action-cell">
+            <a class="btn btn-sm btn-outline-light" href="{{ url_for('dashboard.preview_email', lead_id=lead.id) }}">Preview</a>
+            <a class="btn btn-sm btn-outline-info" target="_blank" href="https://mail.google.com/mail/u/0/#inbox/{{ lead.thread_id }}">Gmail</a>
+            {% for action,label in [('send_now','Send'),('pause','Pause'),('resume','Resume'),('retry','Retry'),('delete','Delete')] %}
+            <form method="post" action="{{ url_for('dashboard.lead_action', lead_id=lead.id, action=action) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+              <button class="btn btn-sm btn-outline-warning" {% if action == 'delete' %}data-confirm="Delete this lead?"{% endif %}>{{ label }}</button>
+            </form>
+            {% endfor %}
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="7" class="text-secondary">No leads found.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination-line">Showing page {{ page }} of {{ ((total - 1) // per_page) + 1 if total else 1 }} · {{ total }} total</div>
+</section>
+{% endblock %}
+
